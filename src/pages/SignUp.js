@@ -1,9 +1,12 @@
 import React from "react";
+import Header from "../components/Header";
 
 const SignUp = () => {
   return (
     <>
-      <div>SignUp</div>
+      <div>
+        <Header />
+      </div>
     </>
   );
 };
