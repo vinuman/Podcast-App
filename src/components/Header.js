@@ -8,10 +8,10 @@ const Header = () => {
   return (
     <>
       <div className="flex justify-center items-center p-[1.5rem]">
-        <div className="absolute w-[800px] h-[150px] mx-auto border -z-10 bg-blue blur-[100px] top-[-100px]"></div>
-        <div className="flex justify-center gap-[3rem] font-semibold text-[#8f8297]">
+        <div className="absolute w-[800px] h-[150px] mx-auto bg-blue blur-[100px] top-[-90px]"></div>
+        <div className="flex justify-center gap-[3rem] font-semibold text-[#8f8297] bg-theme">
           <Link
-            className={`hover:text-white transition-all duration-300 ${
+            className={`hover:text-white transition-all duration-300 z-10 ${
               isActive === "/" ? "underline text-white" : ""
             }`}
             to="/"
@@ -19,7 +19,7 @@ const Header = () => {
             Signup
           </Link>
           <Link
-            className={`hover:text-white transition-all duration-300 ${
+            className={`hover:text-white transition-all duration-300 z-10 ${
               isActive === "/podcasts" ? "underline text-white" : ""
             }`}
             to="/podcasts"
@@ -27,7 +27,7 @@ const Header = () => {
             Podcasts
           </Link>
           <Link
-            className={`hover:text-white transition-all duration-300 ${
+            className={`hover:text-white transition-all duration-300 z-10 ${
               isActive === "/start-a-podcast" ? "underline text-white" : ""
             }`}
             to="/start-a-podcast"
@@ -35,7 +35,7 @@ const Header = () => {
             Start A Podcast
           </Link>
           <Link
-            className={`hover:text-white transition-all duration-300 ${
+            className={`hover:text-white transition-all duration-300 z-10 ${
               isActive === "/profile" ? "underline text-white" : ""
             }`}
             to="/profile"
