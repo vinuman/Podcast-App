@@ -2,6 +2,16 @@ import React from "react";
 import Input from "./Input";
 import Button from "./Button";
 import { useState } from "react";
+import { auth, db, storage } from "../firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+import { setUser } from "../slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [fullName, setFullName] = useState("");
@@ -9,8 +19,43 @@ const SignUpForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSignUp = () => {
-    console.log("sign up");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSignUp = async () => {
+    if (password === confirmPassword && password.length >= 0) {
+      try {
+        //Creating user account
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        //save user details to firestore
+        await setDoc(doc(db, "users", user.uid), {
+          name: fullName,
+          email: user.email,
+          uid: user.uid,
+        });
+
+        //save the user state
+        dispatch(
+          setUser({
+            name: fullName,
+            email: user.email,
+            uid: user.uid,
+          })
+        );
+
+        //navigate to the  profile page
+        navigate("/profile");
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      //throw error
+    }
   };
 
   return (

@@ -2,14 +2,51 @@ import React from "react";
 import { useState } from "react";
 import Input from "./Input";
 import Button from "./Button";
+import { auth, db, storage } from "../firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setUser } from "../slices/userSlice";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  //Login function
+  const handleLogin = async () => {
     console.log("Login");
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredentials.user;
+
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const userDate = userDoc.data();
+
+      dispatch(
+        setUser({
+          name: userDate.name,
+          email: user.email,
+          uid: user.uid,
+        })
+      );
+      navigate("/profile");
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <>
       <div className="w-[80%] block mx-auto mt-[4rem]">
