@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
@@ -10,6 +12,7 @@ function App() {
         <Route path="/" element={<SignUp />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
       </Routes>
+      <ToastContainer />
     </div>
   );
 }
