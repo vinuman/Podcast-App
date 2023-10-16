@@ -28,9 +28,9 @@ const Header = () => {
           </Link>
           <Link
             className={`hover:text-white transition-all duration-300 z-10 ${
-              isActive === "/start-a-podcast" ? "underline text-white" : ""
+              isActive === "/create-a-podcast" ? "underline text-white" : ""
             }`}
-            to="/start-a-podcast"
+            to="/create-a-podcast"
           >
             Start A Podcast
           </Link>
