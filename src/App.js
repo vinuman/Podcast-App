@@ -10,9 +10,11 @@ import { auth, db } from "./firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { setUser } from "./slices/userSlice";
+import PrivateRoutes from "./components/PrivateRoutes";
 
 function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const authUnsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -44,11 +46,14 @@ function App() {
       authUnsubscribe();
     };
   }, []);
+
   return (
     <div className="App font-inter bg-theme w-[100vw] h-[100vh]">
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
-        <Route path="/profile" element={<Profile />}></Route>
+        <Route element={<PrivateRoutes />}>
+          <Route path="/profile" element={<Profile />}></Route>
+        </Route>
       </Routes>
       <ToastContainer />
     </div>
