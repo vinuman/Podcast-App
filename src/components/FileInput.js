@@ -5,8 +5,8 @@ const FileInput = ({ accept, id, fileHandleFnc, text, onClick }) => {
   const [fileSelected, setFileSelected] = useState(false);
 
   const onChange = (e) => {
-    console.log(e.target.files);
     setFileSelected(e.target.files[0].name);
+    fileHandleFnc(e.target.files[0]);
   };
 
   return (

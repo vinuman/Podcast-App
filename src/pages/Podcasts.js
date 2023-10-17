@@ -56,7 +56,7 @@ const Podcasts = () => {
             setSearch(e.target.value);
           }}
         ></input>
-        {podcasts.length > 0 ? (
+        {filteredPodcasts.length > 0 ? (
           <div className="flex justify-center items-center flex-wrap gap-[2rem]">
             {filteredPodcasts.map((item) => (
               <PodcastCard
@@ -68,8 +68,8 @@ const Podcasts = () => {
             ))}
           </div>
         ) : (
-          <p className="text-white text-center text-[1.2rem] font-medium py-32">
-            {search ? "Podcasts Not found" : "No Podcasts Yet"}
+          <p className="text-white text-center text-[1.6rem] font-medium py-32">
+            {search !== "" ? "Podcast Not found" : "No Podcasts Yet"}
           </p>
         )}
       </div>

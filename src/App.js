@@ -1,8 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import Header from "./components/Header";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import { onAuthStateChanged } from "firebase/auth";
@@ -13,13 +12,16 @@ import { setUser } from "./slices/userSlice";
 import PrivateRoutes from "./components/PrivateRoutes";
 import CreatePodcast from "./pages/CreatePodcast";
 import Podcasts from "./pages/Podcasts";
+import PodcastDetails from "./pages/PodcastDetails";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authUnsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        navigate("/podcasts");
         const unsubscribeSnapshot = onSnapshot(
           doc(db, "users", user.uid),
           (userDoc) => {
@@ -57,6 +59,7 @@ function App() {
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/create-a-podcast" element={<CreatePodcast />}></Route>
           <Route path="podcasts" element={<Podcasts />}></Route>
+          <Route path="podcast/:id" element={<PodcastDetails />}></Route>
         </Route>
       </Routes>
       <ToastContainer />

@@ -46,7 +46,7 @@ const Profile = () => {
   return (
     <>
       <Header />
-      <div>
+      <div className=" min-h-screen">
         <h1 className="text-white">{user.name}</h1>
         <h2 className="text-white">{user.email}</h2>
         <Button text="Logout" onClick={handleLogout} />
