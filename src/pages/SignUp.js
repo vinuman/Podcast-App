@@ -7,7 +7,7 @@ const SignUp = () => {
   const [flag, setFlag] = useState(false);
   return (
     <>
-      <div>
+      <div className="h-[100vh]">
         <Header />
         {!flag ? (
           <h1 className="text-[1.8rem] font-bold text-white text-center my-[2rem]">

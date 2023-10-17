@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "./slices/userSlice";
 import PrivateRoutes from "./components/PrivateRoutes";
 import CreatePodcast from "./pages/CreatePodcast";
+import Podcasts from "./pages/Podcasts";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,12 +50,13 @@ function App() {
   }, []);
 
   return (
-    <div className="App font-inter bg-theme w-[100vw] h-[100vh]">
+    <div className="App font-inter bg-theme w-[100vw]">
       <Routes>
         <Route path="/" element={<SignUp />}></Route>
         <Route element={<PrivateRoutes />}>
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/create-a-podcast" element={<CreatePodcast />}></Route>
+          <Route path="podcasts" element={<Podcasts />}></Route>
         </Route>
       </Routes>
       <ToastContainer />
