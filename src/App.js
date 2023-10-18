@@ -13,6 +13,7 @@ import PrivateRoutes from "./components/PrivateRoutes";
 import CreatePodcast from "./pages/CreatePodcast";
 import Podcasts from "./pages/Podcasts";
 import PodcastDetails from "./pages/PodcastDetails";
+import CreateEpisode from "./pages/CreateEpisode";
 
 function App() {
   const dispatch = useDispatch();
@@ -60,6 +61,10 @@ function App() {
           <Route path="/create-a-podcast" element={<CreatePodcast />}></Route>
           <Route path="podcasts" element={<Podcasts />}></Route>
           <Route path="podcast/:id" element={<PodcastDetails />}></Route>
+          <Route
+            path="/podcast/:id/create-episode"
+            element={<CreateEpisode />}
+          ></Route>
         </Route>
       </Routes>
       <ToastContainer />

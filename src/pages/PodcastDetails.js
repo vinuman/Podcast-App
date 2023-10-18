@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { useNavigate, useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot, query } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { toast } from "react-toastify";
 import Button from "../components/Button";
+import EpisodeDetails from "../components/EpisodeDetails";
 
 const PodcastDetails = () => {
   const [podcasts, setPodcasts] = useState({});
+  const [episodes, setEpisodes] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -50,6 +52,27 @@ const PodcastDetails = () => {
       });
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(collection(db, "podcasts", id, "episodes")),
+      (querySnapshot) => {
+        const episodesData = [];
+        querySnapshot.forEach((doc) => {
+          episodesData.push({ id: doc.id, ...doc.data() });
+        });
+        setEpisodes(episodesData);
+      },
+      (error) => {
+        console.error("Error fetching episodes:", error);
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [id]);
+
   return (
     <>
       <Header />
@@ -82,6 +105,22 @@ const PodcastDetails = () => {
               {podcasts.description}
             </p>
             <h1 className="text-white text-[1.8rem] font-bold">Episodes</h1>
+            {episodes.length > 0 ? (
+              <>
+                {episodes.map((episode, index) => (
+                  <EpisodeDetails
+                    key={index}
+                    index={index + 1}
+                    title={episode.title}
+                    desc={episode.description}
+                    audioFile={episode.audioFile}
+                    onClick={(file) => console.log("Playing file:", file)}
+                  />
+                ))}
+              </>
+            ) : (
+              <p>No episodes yet</p>
+            )}
           </div>
         )}
       </div>
