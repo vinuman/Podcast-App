@@ -6,12 +6,16 @@ import { auth, db } from "../firebase";
 import { toast } from "react-toastify";
 import Button from "../components/Button";
 import EpisodeDetails from "../components/EpisodeDetails";
+import AudioPlayer from "../components/AudioPlayer";
 
 const PodcastDetails = () => {
   const [podcasts, setPodcasts] = useState({});
   const [episodes, setEpisodes] = useState([]);
+  const [playFile, setPlayFile] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
+
+  console.log(playFile);
 
   useEffect(() => {
     if (id) {
@@ -114,14 +118,19 @@ const PodcastDetails = () => {
                     title={episode.title}
                     desc={episode.description}
                     audioFile={episode.audioFile}
-                    onClick={(file) => console.log("Playing file:", file)}
+                    onClick={() => setPlayFile(episode.audioFile)}
                   />
                 ))}
               </>
             ) : (
-              <p>No episodes yet</p>
+              <p className="text-white pt-[1rem] text-[1.6rem] opacity-80">
+                No episodes yet !!
+              </p>
             )}
           </div>
+        )}
+        {playFile !== "" && (
+          <AudioPlayer audioSrc={playFile} image={podcasts.displayImage} />
         )}
       </div>
     </>

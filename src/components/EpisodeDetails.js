@@ -1,19 +1,36 @@
 import React from "react";
+import { useState } from "react";
 import Button from "./Button";
+import { Icon } from "@iconify/react";
 
 const EpisodeDetails = ({ title, desc, audioFile, onClick, index }) => {
+  const [purplePlayBtn, setPurplePlayBtn] = useState(false);
+  const handlePlayBtn = () => {
+    setPurplePlayBtn(!purplePlayBtn);
+  };
   return (
     <>
       <div>
-        <h1 className="text-left text-white text-[1.2rem] font-semibold pt-2">
+        <h1 className="text-left text-white text-[1.2rem] font-semibold pt-2 pb-2">
           {index}) {title}
         </h1>
         <p className="pb-4 text-[#8f8297]">{desc}</p>
-        <Button
-          className="w-[200px] h-[48px] border text-white font-bold hover:bg-white hover:text-theme transition-all duration-300 rounded-lg tracking-wide"
-          text="Play"
-          onClick={() => onClick(audioFile)}
-        ></Button>
+        <div
+          onClick={onClick}
+          onMouseEnter={handlePlayBtn}
+          onMouseLeave={handlePlayBtn}
+          className="w-[160px] h-[52px] border rounded-lg flex items-center justify-center gap-2 cursor-pointer group hover:bg-white transition-all duration-300 mb-8"
+        >
+          <Button
+            className="text-white font-bold text-[20px]  pb-1 tracking-wide group-hover:text-theme"
+            text="Play"
+          ></Button>
+          {purplePlayBtn ? (
+            <Icon icon="ph:play-fill" color="#20062e" width="20" height="20" />
+          ) : (
+            <Icon icon="ph:play-fill" color="white" width="20" height="20" />
+          )}
+        </div>
       </div>
     </>
   );

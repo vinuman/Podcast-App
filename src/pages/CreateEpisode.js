@@ -46,16 +46,16 @@ const CreateEpisode = () => {
           storage,
           `podcast-episodes/${auth.currentUser.uid}/${Date.now()}`
         );
-
         await uploadBytes(audioRef, audioFile);
 
         const audioURL = await getDownloadURL(audioRef);
-
+        console.log(audioURL);
         const episodeData = {
-          title,
+          title: title,
           description: desc,
           audioFile: audioURL,
         };
+
         await addDoc(collection(db, "podcasts", id, "episodes"), episodeData);
         toast.success("Episode created successfully", {
           position: "top-right",
@@ -142,7 +142,7 @@ const CreateEpisode = () => {
           </p>
         )}
         <Button
-          text={loading ? "Loading..." : "Create Podcast"}
+          text={loading ? "Loading..." : "Create Episode"}
           disabled={loading}
           onClick={handleSubmit}
           className={`border text-white font-bold w-[300px] h-[48px] rounded-lg hover:bg-white hover:text-theme transition-all duration-300`}
