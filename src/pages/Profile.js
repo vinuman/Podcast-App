@@ -6,6 +6,7 @@ import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const Profile = () => {
   const user = useSelector((state) => state.user.user);
@@ -41,7 +42,7 @@ const Profile = () => {
   };
 
   if (!user) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
   return (
     <>
