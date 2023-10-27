@@ -14,6 +14,8 @@ import { setUser } from "../slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import validator from "validator";
 import { toast } from "react-toastify";
+import FileInput from "./FileInput";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const SignUpForm = () => {
   const [fullName, setFullName] = useState("");
@@ -24,6 +26,7 @@ const SignUpForm = () => {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [displayImage, setDisplayImage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -76,19 +79,29 @@ const SignUpForm = () => {
           password
         );
         const user = userCredential.user;
+
+        const displayImageRef = ref(
+          storage,
+          `users/${auth.currentUser.uid}/${Date.now()}`
+        );
+        await uploadBytes(displayImageRef, displayImage);
+        const displayImageUrl = await getDownloadURL(displayImageRef);
         //save user details to firestore
         await setDoc(doc(db, "users", user.uid), {
           name: fullName,
           email: user.email,
           uid: user.uid,
+          displayImage: displayImageUrl,
         });
 
         //save the user state
+
         dispatch(
           setUser({
             name: fullName,
             email: user.email,
             uid: user.uid,
+            displayImage: displayImageUrl,
           })
         );
 
@@ -104,9 +117,9 @@ const SignUpForm = () => {
         });
         setLoading(false);
         //navigate to the  profile page
-        navigate("/profile");
+        navigate("/podcasts");
       } catch (err) {
-        toast.error("User already exists", {
+        toast.error(err, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -180,7 +193,7 @@ const SignUpForm = () => {
           required={true}
           placeholder="Confirm Password"
           className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
-            confirmPasswordError ? " border-red-700" : "border-[#8f8297] mb-4"
+            confirmPasswordError ? " border-red-700" : "border-[#8f8297] mb-8"
           }`}
           onChange={(e) => {
             setConfirmPassword(e.target.value);
@@ -190,8 +203,16 @@ const SignUpForm = () => {
         {confirmPasswordError && (
           <p className=" text-red-700 mb-2">The passwords has to match</p>
         )}
+        <FileInput
+          className="my-4"
+          text="Upload Display Image(optional)"
+          accept={"image/*"}
+          id="display-image-input"
+          fileHandleFnc={setDisplayImage}
+        />
+
         <Button
-          className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-4 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300"
+          className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-4 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300 mt-8"
           onClick={handleSignUp}
           text={loading ? "Loading..." : "Sign Up"}
           disabled={loading}

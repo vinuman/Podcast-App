@@ -115,7 +115,7 @@ const StartPodcast = () => {
             value={title}
             required={true}
             placeholder="Podcast Title"
-            className={` bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[50%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
+            className={` bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] sm:w-[50%] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
               titleError ? " border-red-700" : "border-[#8f8297] mb-4"
             }`}
             onChange={(e) => {
@@ -132,7 +132,7 @@ const StartPodcast = () => {
             value={description}
             required={true}
             placeholder="Podcast Description"
-            className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[50%] h-32 font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
+            className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] sm:w-[50%] w-[100%] h-32 font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
               descriptionError ? " border-red-700" : "border-[#8f8297] mb-4"
             }`}
             onChange={(e) => {
@@ -151,6 +151,7 @@ const StartPodcast = () => {
             accept={"image/*"}
             id="display-image-input"
             fileHandleFnc={displayImgHandleFnc}
+            className="sm:w-[50%] w-[99%]"
           />
           {displayImageError && (
             <p className=" text-red-700 mb-2 pr-[350px] pt-0">
@@ -163,6 +164,7 @@ const StartPodcast = () => {
             accept={"image/*"}
             id="banner-image-input"
             fileHandleFnc={bannerImgHandleFnc}
+            className="sm:w-[50%] w-[99%]"
           />
           {bannerImageError && (
             <p className=" text-red-700 mb-2 pr-[350px] pt-1">
