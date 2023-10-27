@@ -21,14 +21,14 @@ const SignUp = () => {
         {!flag ? <SignUpForm /> : <LoginForm />}
         {!flag ? (
           <p
-            className="text-white mx-auto mt-8 cursor-pointer text-center text-[32px] opacity-80 hover:opacity-100 transition-all duration-300"
+            className="text-white mx-auto mt-8 cursor-pointer text-center text-[32px] opacity-80 hover:opacity-100 transition-all duration-300 underline"
             onClick={() => setFlag(true)}
           >
             Click here if you already have an Account !
           </p>
         ) : (
           <p
-            className="text-white mx-auto mt-8 cursor-pointer text-center text-[32px] opacity-80 hover:opacity-100 transition-all duration-300"
+            className="text-white mx-auto mt-8 cursor-pointer text-center text-[32px] opacity-80 hover:opacity-100 transition-all duration-300 underline"
             onClick={() => setFlag(false)}
           >
             Click here if you DO NOT have an account !
