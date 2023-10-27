@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Header from "../components/Header";
 import Button from "../components/Button";
+import EditModal from "../components/EditModal";
 import { auth, db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { signOut } from "firebase/auth";
@@ -11,12 +12,22 @@ import Loader from "../components/Loader";
 import FileInput from "../components/FileInput";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { setUser } from "../slices/userSlice";
+import { Icon } from "@iconify/react";
 
 const Profile = () => {
   const [displayImage, setDisplayImage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleDisplayUpload = async (file) => {
     try {
@@ -69,7 +80,6 @@ const Profile = () => {
           progress: undefined,
           theme: "#20062e",
         });
-        /*  navigate("/"); */
       })
       .catch((err) => {
         toast.error(err, {
@@ -93,21 +103,13 @@ const Profile = () => {
       <Header />
       <div className=" min-h-screen flex flex-col items-center pt-24">
         {user.displayImage ? (
-          <div className="w-[200px] h-[200px] rounded-lg relative right-0 bottom-1 group cursor-pointer transition-all duration-300">
-            <p className=" absolute right-1 bottom-1 font-bold text-white group-hover:text-black group-hover:text-xl">
-              Change image
-            </p>
+          <div className="w-[200px] h-[200px] rounded-lg group transition-all duration-300">
             <img
               className=" w-[100%] h-[100%] rounded-lg"
               src={user.displayImage}
             ></img>
           </div>
         ) : (
-          /* <div className="w-[200px] h-[200px] border rounded-lg cursor-pointer group">
-            <p className="opacity-80 text-white flex justify-center pt-[40%] group-hover:opacity-100">
-              Upload an image
-            </p>
-          </div> */
           <FileInput
             className="my-4 w-[200px] h-[200px] flex justify-center items-center"
             text="Upload Image"
@@ -118,14 +120,42 @@ const Profile = () => {
         )}
 
         <h1 className="text-white mt-4 text-[32px] font-bold">{user.name}</h1>
-        <h2 className="text-white tracking-wide">{user.email}</h2>
+        <h2 className="text-white tracking-wide pb-4">{user.email}</h2>
 
-        <Button
-          className="border text-white px-4 py-2 mt-4 hover:text-theme hover:bg-white transition-all duration-300 rounded-lg font-bold"
-          text="Logout"
-          onClick={handleLogout}
-        />
+        <div className="flex gap-4">
+          <div
+            onClick={openModal}
+            className="w-[140px] h-[52px] rounded-lg flex items-center justify-center gap-2 cursor-pointer group bg-blue-500 border mb-8 group transition-all duration-300"
+          >
+            <Button
+              className=" text-white  font-bold group-hover:text-gray-500"
+              text="Edit Profile"
+            />
+            <Icon
+              icon="mdi:edit-outline"
+              color="white"
+              width="20"
+              height="20"
+            />
+          </div>
+          <div
+            onClick={handleLogout}
+            className="w-[140px] h-[52px]  rounded-lg flex items-center justify-center gap-2 cursor-pointer group bg-red-500 mb-8 group transition-all duration-300"
+          >
+            <Button
+              className=" text-white  font-bold group-hover:text-black"
+              text="Logout"
+            />
+            <Icon
+              icon="solar:logout-line-duotone"
+              color="white"
+              width="24"
+              height="24"
+            />
+          </div>
+        </div>
       </div>
+      <EditModal isOpen={isModalOpen} onClose={closeModal} />
     </>
   );
 };

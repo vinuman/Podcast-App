@@ -205,7 +205,7 @@ const SignUpForm = () => {
         )}
         <FileInput
           className="my-4"
-          text="Upload Display Image(optional)"
+          text="Upload Display Image (optional)"
           accept={"image/*"}
           id="display-image-input"
           fileHandleFnc={setDisplayImage}
