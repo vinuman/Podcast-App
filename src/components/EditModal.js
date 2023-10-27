@@ -12,6 +12,7 @@ const Modal = ({ isOpen, onClose, children }) => {
   const user = useSelector((state) => state.user.user);
   const [newName, setNewName] = useState(user.name);
   const [newImage, setNewImage] = useState(user.displayImage);
+
   const modalStyle = {
     display: isOpen ? "block" : "none",
     position: "fixed",
