@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { Icon } from "@iconify/react";
 import { clearUser } from "../slices/userSlice";
+import { getAuth, deleteUser } from "firebase/auth";
 
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,8 +56,39 @@ const Profile = () => {
       });
   };
 
+  //Delete profile
   const handleDeleteProfile = () => {
     if (deleteConfirmation === "delete account") {
+      const user = auth.currentUser;
+      if (user) {
+        deleteUser(user)
+          .then(() => {
+            // Account deleted.
+            toast.success("Your account has been successfully deleted.", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "#20062e",
+            });
+          })
+          .catch((error) => {
+            // An error occurred.
+            toast.error(error.message, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "#20062e",
+            });
+          });
+      }
     }
   };
 
