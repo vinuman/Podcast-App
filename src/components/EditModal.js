@@ -8,11 +8,13 @@ import { auth, db, storage } from "../firebase";
 import { setUser } from "../slices/userSlice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+import { toast } from "react-toastify";
+
 const Modal = ({ isOpen, onClose, children }) => {
   const user = useSelector((state) => state.user.user);
   const [newName, setNewName] = useState(user.name);
-  const [newImage, setNewImage] = useState(user.displayImage);
-
+  const [newImage, setNewImage] = useState("");
+  console.log(user.displayImage);
   const modalStyle = {
     display: isOpen ? "block" : "none",
     position: "fixed",
@@ -30,11 +32,8 @@ const Modal = ({ isOpen, onClose, children }) => {
   const dispatch = useDispatch();
 
   const handleEdit = async () => {
-    if (newName.trim() !== "") {
-      try {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        const userData = userDoc.data();
-
+    try {
+      if (newImage !== "") {
         const displayImageRef = ref(
           storage,
           `users/${auth.currentUser.uid}/${Date.now()}`
@@ -57,9 +56,25 @@ const Modal = ({ isOpen, onClose, children }) => {
             displayImage: displayImageUrl,
           })
         );
-      } catch (err) {
-        console.log(err);
+      } else {
+        await setDoc(doc(db, "users", user.uid), {
+          name: newName,
+          email: user.email,
+          uid: user.uid,
+          displayImage: user.displayImage,
+        });
+
+        dispatch(
+          setUser({
+            name: newName,
+            email: user.email,
+            uid: user.uid,
+            displayImage: user.displayImage,
+          })
+        );
       }
+    } catch (err) {
+      console.log(err);
     }
   };
 

@@ -91,6 +91,7 @@ const SignUpForm = () => {
         );
         await uploadBytes(displayImageRef, displayImage);
         const displayImageUrl = await getDownloadURL(displayImageRef);
+
         //save user details to firestore
         await setDoc(doc(db, "users", user.uid), {
           name: fullName,

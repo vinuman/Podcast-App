@@ -4,19 +4,15 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import EditModal from "../components/EditModal";
 import { auth, db, storage } from "../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { signOut } from "firebase/auth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
-import FileInput from "../components/FileInput";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { setUser } from "../slices/userSlice";
 import { Icon } from "@iconify/react";
 
 const Profile = () => {
-  const [displayImage, setDisplayImage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,44 +23,6 @@ const Profile = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  const handleDisplayUpload = async (file) => {
-    try {
-      const displayImageRef = ref(
-        storage,
-        `users/${auth.currentUser.uid}/${Date.now()}`
-      );
-      await uploadBytes(displayImageRef, file);
-      const displayImageUrl = await getDownloadURL(displayImageRef);
-
-      await setDoc(doc(db, "users", user.uid), {
-        name: user.name,
-        email: user.email,
-        uid: user.uid,
-        displayImage: displayImageUrl,
-      });
-
-      dispatch(
-        setUser({
-          name: user.name,
-          email: user.email,
-          uid: user.uid,
-          displayImage: displayImageUrl,
-        })
-      );
-    } catch (err) {
-      toast.error(err, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "#20062e",
-      });
-    }
   };
 
   const handleLogout = () => {
@@ -95,6 +53,8 @@ const Profile = () => {
       });
   };
 
+  console.log(user.displayImage);
+
   if (!user) {
     return <Loader />;
   }
@@ -102,22 +62,12 @@ const Profile = () => {
     <>
       <Header />
       <div className=" min-h-screen flex flex-col items-center pt-24">
-        {user.displayImage ? (
-          <div className="w-[200px] h-[200px] rounded-lg group transition-all duration-300">
-            <img
-              className=" w-[100%] h-[100%] rounded-lg"
-              src={user.displayImage}
-            ></img>
-          </div>
-        ) : (
-          <FileInput
-            className="my-4 w-[200px] h-[200px] flex justify-center items-center"
-            text="Upload Image"
-            accept={"image/*"}
-            id="display-image-input"
-            fileHandleFnc={handleDisplayUpload}
-          />
-        )}
+        <div className="w-[200px] h-[200px] rounded-lg group transition-all duration-300">
+          <img
+            className=" w-[100%] h-[100%] rounded-lg"
+            src={user.displayImage}
+          ></img>
+        </div>
 
         <h1 className="text-white mt-4 text-[32px] font-bold">{user.name}</h1>
         <h2 className="text-white tracking-wide pb-4">{user.email}</h2>
