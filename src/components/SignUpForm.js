@@ -27,6 +27,7 @@ const SignUpForm = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [displayImage, setDisplayImage] = useState("");
+  const [displayImageError, setDisplayImageError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -41,7 +42,8 @@ const SignUpForm = () => {
       password.trim() === "" ||
       confirmPassword.trim() === "" ||
       password !== confirmPassword ||
-      password.length < 6
+      password.length < 6 ||
+      displayImage === ""
     ) {
       if (fullName.trim() === "") {
         setNameError(true);
@@ -57,6 +59,9 @@ const SignUpForm = () => {
       }
       if (password !== confirmPassword) {
         setConfirmPasswordError(true);
+      }
+      if (displayImage === "") {
+        setDisplayImageError(true);
       }
     }
     //Email validator
@@ -201,15 +206,21 @@ const SignUpForm = () => {
           }}
         ></input>
         {confirmPasswordError && (
-          <p className=" text-red-700 mb-2">The passwords has to match</p>
+          <p className=" text-red-700 mb-4">The passwords has to match</p>
         )}
         <FileInput
-          className="my-4"
-          text="Upload Display Image (optional)"
+          text="Upload Display Image"
           accept={"image/*"}
           id="display-image-input"
           fileHandleFnc={setDisplayImage}
+          className={`${
+            displayImageError ? "border-red-600" : "border-[#8f8297] mb-8"
+          }`}
+          onClick={() => setDisplayImageError(false)}
         />
+        {displayImageError && (
+          <p className=" text-red-700 mt-4">Please upload a display picture</p>
+        )}
 
         <Button
           className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-4 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300 mt-8"

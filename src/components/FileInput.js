@@ -13,7 +13,7 @@ const FileInput = ({ accept, id, fileHandleFnc, text, onClick, className }) => {
     <>
       <label
         onClick={onClick}
-        className={`${
+        className={`className ${
           fileSelected ? "text-white" : "text-[#8f8297]"
         }  hover:text-white hover:border-white cursor-pointer border-2 border-[#8f8297] rounded-md p-4 text-[1rem] w-[50%] font-bold  mb-4 ${className}`}
         htmlFor={id}
