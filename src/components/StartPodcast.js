@@ -105,7 +105,7 @@ const StartPodcast = () => {
   };
   return (
     <>
-      <div className="w-[80%] block mx-auto mt-[4rem] ">
+      <div className="w-[80%] block mx-auto mt-[4rem] min-h-screen">
         <h1 className="text-[2rem] text-white font-semibold text-center mb-16">
           Create a Podcast
         </h1>

@@ -7,28 +7,28 @@ const SignUp = () => {
   const [flag, setFlag] = useState(false);
   return (
     <>
-      <div className="h-[100vh]">
+      <div className="pb-8 min-h-screen">
         <Header />
         {!flag ? (
-          <h1 className=" font-bold text-white text-center text-[32px] my-[2rem]">
+          <h1 className=" font-bold text-white text-center text-[28px] my-[2rem]">
             Sign Up
           </h1>
         ) : (
-          <h1 className=" font-bold text-white text-center text-[32px] my-[2rem]">
+          <h1 className=" font-bold text-white text-center text-[28px] my-[2rem]">
             Login
           </h1>
         )}
         {!flag ? <SignUpForm /> : <LoginForm />}
         {!flag ? (
           <p
-            className="text-white mx-auto mt-8 cursor-pointer text-center text-[32px] opacity-80 hover:opacity-100 transition-all duration-300 underline"
+            className="text-white mx-auto mt-8 cursor-pointer text-center text-[28px] opacity-80 hover:opacity-100 transition-all duration-300 underline pb-8"
             onClick={() => setFlag(true)}
           >
             Click here if you already have an Account !
           </p>
         ) : (
           <p
-            className="text-white mx-auto mt-8 cursor-pointer text-center text-[32px] opacity-80 hover:opacity-100 transition-all duration-300 underline"
+            className="text-white mx-auto mt-8 cursor-pointer text-center text-[28px] opacity-80 hover:opacity-100 transition-all duration-300 underline pb-8"
             onClick={() => setFlag(false)}
           >
             Click here if you DO NOT have an account !

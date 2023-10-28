@@ -33,6 +33,7 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   const handleEdit = async () => {
     try {
+      //If image is  selected
       if (newImage !== "") {
         const displayImageRef = ref(
           storage,
@@ -56,6 +57,7 @@ const Modal = ({ isOpen, onClose, children }) => {
             displayImage: displayImageUrl,
           })
         );
+        //If image is not selected
       } else {
         await setDoc(doc(db, "users", user.uid), {
           name: newName,

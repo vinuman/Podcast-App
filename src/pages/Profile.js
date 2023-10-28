@@ -9,10 +9,12 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { Icon } from "@iconify/react";
+import { clearUser } from "../slices/userSlice";
 
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [deleteProfile, setDeleteProfile] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,6 +55,11 @@ const Profile = () => {
       });
   };
 
+  const handleDeleteProfile = () => {
+    if (deleteConfirmation === "delete account") {
+    }
+  };
+
   console.log(user.displayImage);
 
   if (!user) {
@@ -61,7 +68,7 @@ const Profile = () => {
   return (
     <>
       <Header />
-      <div className=" min-h-screen flex flex-col items-center pt-24">
+      <div className="flex flex-col items-center pt-24 min-h-screen">
         <div className="w-[200px] h-[200px] rounded-lg group transition-all duration-300">
           <img
             className=" w-[100%] h-[100%] rounded-lg"
@@ -104,6 +111,57 @@ const Profile = () => {
             />
           </div>
         </div>
+        {/*  DELETE ACCOUNT DIV */}
+        <div className="mt-16 border-t-2 border-red-800 pt-4 sm:w-[60%] w-[100%] flex justify-center items-center gap-4">
+          {deleteProfile && (
+            <div className="border flex flex-col p-4 rounded-lg">
+              <label className="text-white pb-4">
+                Type in "delete account" and press confirm
+              </label>
+              <input
+                className="h-[48px] p-4 outline-none rounded-lg"
+                type="text"
+                placeholder="delete account"
+                value={deleteConfirmation}
+                onChange={(e) => setDeleteConfirmation(e.target.value)}
+              ></input>
+            </div>
+          )}
+          {!deleteProfile && (
+            <div
+              onClick={() => setDeleteProfile(true)}
+              className="w-[140px] h-[52px]  rounded-lg flex items-center justify-center gap-2 cursor-pointer group bg-red-500 mb-8 group transition-all duration-300"
+            >
+              <Button
+                className=" text-white  font-bold group-hover:text-black"
+                text="Delete Account"
+              />
+            </div>
+          )}
+          {deleteProfile && (
+            <div
+              onClick={handleDeleteProfile}
+              className="w-[140px] h-[52px]  rounded-lg flex items-center justify-center gap-2 cursor-pointer group bg-red-500 mb-8 group transition-all duration-300"
+            >
+              <Button
+                className=" text-white  font-bold group-hover:text-black"
+                text="Confirm"
+              />
+            </div>
+          )}
+          {deleteProfile && (
+            <div
+              onClick={() => setDeleteProfile(false)}
+              className="w-[140px] h-[52px]  rounded-lg flex items-center justify-center gap-2 cursor-pointer group bg-emerald-600 mb-8 group transition-all duration-300"
+            >
+              <Button
+                className=" text-white  font-bold group-hover:text-black"
+                text="Cancel"
+              />
+            </div>
+          )}
+        </div>
+        {/*  DELETE ACCOUNT DIV ENDS */}
       </div>
       <EditModal isOpen={isModalOpen} onClose={closeModal} />
     </>

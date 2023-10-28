@@ -5,7 +5,7 @@ import StartPodcast from "../components/StartPodcast";
 const CreatePodcast = () => {
   return (
     <>
-      <div className="h-[100vh]">
+      <div>
         <Header />
         <StartPodcast />
       </div>
