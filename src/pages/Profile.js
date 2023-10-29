@@ -10,12 +10,17 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { Icon } from "@iconify/react";
 import { clearUser } from "../slices/userSlice";
-import { getAuth, deleteUser } from "firebase/auth";
+import {
+  getAuth,
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteProfile, setDeleteProfile] = useState(false);
-  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [password, setPassword] = useState("");
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -58,41 +63,65 @@ const Profile = () => {
 
   //Delete profile
   const handleDeleteProfile = () => {
-    if (deleteConfirmation === "delete account") {
-      const user = auth.currentUser;
-      if (user) {
-        deleteUser(user)
-          .then(() => {
-            // Account deleted.
-            toast.success("Your account has been successfully deleted.", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "#20062e",
-            });
-          })
-          .catch((error) => {
-            // An error occurred.
-            toast.error(error.message, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "#20062e",
-            });
+    const user = auth.currentUser;
+    if (user) {
+      deleteUser(user)
+        .then(() => {
+          // Account deleted.
+          toast.success("Your account has been successfully deleted.", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "#20062e",
           });
-      }
+          dispatch(clearUser);
+          navigate("/");
+        })
+        .catch((error) => {
+          // An error occurred.
+          toast.error(error.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "#20062e",
+          });
+        });
     }
   };
 
-  console.log(user.displayImage);
+  const handleReauthentication = () => {
+    const user = auth.currentUser;
+
+    if (user) {
+      const credential = EmailAuthProvider.credential(user.email, password);
+
+      reauthenticateWithCredential(user, credential)
+        .then(() => {
+          // Successfully re-authenticated, now you can delete the account
+          handleDeleteProfile();
+        })
+        .catch((error) => {
+          toast.error(error.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "#20062e",
+          });
+        });
+    }
+  };
 
   if (!user) {
     return <Loader />;
@@ -148,14 +177,14 @@ const Profile = () => {
           {deleteProfile && (
             <div className="border flex flex-col p-4 rounded-lg">
               <label className="text-white pb-4">
-                Type in "delete account" and press confirm
+                Enter your password to delete the account
               </label>
               <input
                 className="h-[48px] p-4 outline-none rounded-lg"
-                type="text"
-                placeholder="delete account"
-                value={deleteConfirmation}
-                onChange={(e) => setDeleteConfirmation(e.target.value)}
+                type="password"
+                placeholder="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               ></input>
             </div>
           )}
@@ -172,7 +201,7 @@ const Profile = () => {
           )}
           {deleteProfile && (
             <div
-              onClick={handleDeleteProfile}
+              onClick={handleReauthentication}
               className="w-[140px] h-[52px]  rounded-lg flex items-center justify-center gap-2 cursor-pointer group bg-red-500 mb-8 group transition-all duration-300"
             >
               <Button
