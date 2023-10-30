@@ -9,20 +9,23 @@ import EpisodeDetails from "../components/EpisodeDetails";
 import AudioPlayer from "../components/AudioPlayer";
 
 const PodcastDetails = () => {
+  // State variables to hold podcast and episode data
   const [podcasts, setPodcasts] = useState({});
   const [episodes, setEpisodes] = useState([]);
   const [playFile, setPlayFile] = useState("");
   const navigate = useNavigate();
+
+  // Get the podcast ID from the route parameter
   const { id } = useParams();
 
-  console.log(playFile);
-
+  // Effect to fetch podcast data when the ID changes
   useEffect(() => {
     if (id) {
       getData();
     }
   }, [id]);
 
+  // Function to fetch podcast data
   const getData = async () => {
     try {
       const docRef = doc(db, "podcasts", id);
@@ -30,7 +33,9 @@ const PodcastDetails = () => {
 
       if (docSnap.exists()) {
         setPodcasts({ id: id, ...docSnap.data() });
-      } else {
+      }
+      // If no document found, display an error and navigate to podcasts page
+      else {
         toast.error("No such documents", {
           position: "top-right",
           autoClose: 5000,
@@ -57,6 +62,7 @@ const PodcastDetails = () => {
     }
   };
 
+  // Effect to listen for changes in episodes
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, "podcasts", id, "episodes")),

@@ -19,17 +19,15 @@ const StartPodcast = () => {
   const [bannerImageError, setBannerImageError] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
+  // Functions to handle file uploads
   const bannerImgHandleFnc = (file) => {
     setBannerImage(file);
   };
-
   const displayImgHandleFnc = (file) => {
     setDisplayImage(file);
   };
 
+  // Function to create a podcast
   const handleCreatePodcast = async () => {
     setLoading(true);
     //Form validation
@@ -49,6 +47,7 @@ const StartPodcast = () => {
       //Validation success
     } else {
       try {
+        // Upload banner image
         const bannerImageRef = ref(
           storage,
           `podcasts/${auth.currentUser.uid}/${Date.now()}`
@@ -56,6 +55,7 @@ const StartPodcast = () => {
         await uploadBytes(bannerImageRef, bannerImage);
         const bannerImageUrl = await getDownloadURL(bannerImageRef);
 
+        // Upload display image
         const displayImageRef = ref(
           storage,
           `podcasts/${auth.currentUser.uid}/${Date.now()}`
@@ -63,6 +63,7 @@ const StartPodcast = () => {
         await uploadBytes(displayImageRef, displayImage);
         const displayImageUrl = await getDownloadURL(displayImageRef);
 
+        // Prepare data for podcast
         const podcastData = {
           title,
           description,
@@ -71,8 +72,10 @@ const StartPodcast = () => {
           createdBy: auth.currentUser.uid,
         };
 
+        // Add podcast data to the Firestore collection
         const docRef = await addDoc(collection(db, "podcasts"), podcastData);
 
+        // Reset form fields and show success toast
         setTitle("");
         setDescription("");
         setBannerImage("");

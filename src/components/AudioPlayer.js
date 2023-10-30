@@ -8,23 +8,30 @@ const AudioPlayer = ({ audioSrc, image }) => {
   const [volume, setVolume] = useState(50);
   const [isMute, setIsMute] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
+
+  // Reference to the audio element
   const audioRef = useRef();
 
+  // Event handler for changing the playback position
   const handleDuration = (e) => {
     setCurrentTime(e.target.value);
     audioRef.current.currentTime = e.target.value;
   };
+
+  // Event handler for adjusting the volume
   const handleVolume = (e) => {
     setVolume(e.target.value);
     audioRef.current.volume = e.target.value;
   };
 
+  // Function to format time in minutes and seconds
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
+  // Effect to set up event listeners and clean them up on unmount
   useEffect(() => {
     const audio = audioRef.current;
     audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -38,19 +45,23 @@ const AudioPlayer = ({ audioSrc, image }) => {
     };
   }, []);
 
+  // Event handler for updating current playback time
   const handleTimeUpdate = () => {
     setCurrentTime(audioRef.current.currentTime);
   };
 
+  // Event handler for when metadata (including duration) is loaded
   const handleLoadedMetadata = () => {
     setDuration(audioRef.current.duration);
   };
 
+  // Event handler for when audio playback ends
   const handleEnded = () => {
     setCurrentTime(0);
     setIsPlaying(false);
   };
 
+  // Effect to play or pause audio based on isPlaying state
   useEffect(() => {
     if (isPlaying) {
       audioRef.current.play();
@@ -59,6 +70,7 @@ const AudioPlayer = ({ audioSrc, image }) => {
     }
   }, [isPlaying]);
 
+  // Effect to mute or unmute audio based on isMute state
   useEffect(() => {
     if (!isMute) {
       audioRef.current.volume = 1;

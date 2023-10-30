@@ -11,7 +11,10 @@ import { auth, db, storage } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
 
 const CreateEpisode = () => {
+  // Retrieve podcast ID from URL params
   const { id } = useParams();
+
+  // State variables for episode details and error handling
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [audioFile, setAudioFile] = useState("");
@@ -21,12 +24,13 @@ const CreateEpisode = () => {
   const [audioError, setAudioError] = useState(false);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
+  // Function to handle audio file upload
   const audioFileHandle = (file) => {
     setAudioFile(file);
   };
 
+  // Function to handle form submission
   const handleSubmit = async () => {
     setLoading(true);
     if (title.trim() === "" || desc.trim() === "" || audioFile === "") {
@@ -42,20 +46,24 @@ const CreateEpisode = () => {
       setLoading(false);
     } else {
       try {
+        // Upload audio file to storage
         const audioRef = ref(
           storage,
           `podcast-episodes/${auth.currentUser.uid}/${Date.now()}`
         );
         await uploadBytes(audioRef, audioFile);
 
+        // Get the download URL of the uploaded audio file
         const audioURL = await getDownloadURL(audioRef);
-        console.log(audioURL);
+
+        // Prepare episode data
         const episodeData = {
           title: title,
           description: desc,
           audioFile: audioURL,
         };
 
+        // Add episode data to Firestore collection
         await addDoc(collection(db, "podcasts", id, "episodes"), episodeData);
         toast.success("Episode created successfully", {
           position: "top-right",

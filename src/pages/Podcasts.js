@@ -13,13 +13,17 @@ import PodcastCard from "../components/PodcastCard";
 
 const Podcasts = () => {
   const [search, setSearch] = useState("");
+
+  // Redux hooks for dispatching actions and selecting state
   const dispatch = useDispatch();
   const podcasts = useSelector((state) => state.podcasts.podcasts);
 
+  // Filter podcasts based on search input
   let filteredPodcasts = podcasts.filter((item) =>
     item.title.trim().toLowerCase().includes(search.trim().toLowerCase())
   );
 
+  // Subscribe to podcasts collection in Firebase and update Redux state
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, "podcasts")),
@@ -34,7 +38,7 @@ const Podcasts = () => {
         console.log("Error fetching podcasts:", error);
       }
     );
-
+    // Clean up listener on component unmount
     return () => {
       unsubscribe();
     };
