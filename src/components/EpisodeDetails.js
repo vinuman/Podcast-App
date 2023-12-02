@@ -10,19 +10,21 @@ const EpisodeDetails = ({ title, desc, audioFile, onClick, index }) => {
   };
   return (
     <>
-      <div>
+      <div className="pb-4">
         <h1 className="text-left text-white text-[1.2rem] font-semibold pt-2 pb-2">
           {index}) {title}
         </h1>
-        <p className="pb-4 text-[#8f8297]">{desc}</p>
+        <p className="pb-4 text-[0.8rem] sm:text-[1rem] text-[#8f8297]">
+          {desc}
+        </p>
         <div
           onClick={onClick}
           onMouseEnter={handlePlayBtn}
           onMouseLeave={handlePlayBtn}
-          className="w-[160px] h-[52px] border rounded-lg flex items-center justify-center gap-2 cursor-pointer group hover:bg-white transition-all duration-300 mb-8"
+          className="w-[160px] h-[48px] border rounded-lg flex items-center justify-center gap-2 cursor-pointer group hover:bg-white transition-all duration-300 mb-8"
         >
           <Button
-            className="text-white font-bold text-[20px]  pb-1 tracking-wide group-hover:text-theme"
+            className="text-white font-bold text-[20px] tracking-wide group-hover:text-theme"
             text="Play"
           ></Button>
           {purplePlayBtn ? (

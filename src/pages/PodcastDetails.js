@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Button from "../components/Button";
 import EpisodeDetails from "../components/EpisodeDetails";
 import AudioPlayer from "../components/AudioPlayer";
+import { motion } from "framer-motion";
 
 const PodcastDetails = () => {
   // State variables to hold podcast and episode data
@@ -89,8 +90,8 @@ const PodcastDetails = () => {
       <div className=" min-h-screen w-[80%] block mx-auto mt-[2rem] pb-4">
         {podcasts.id && (
           <div>
-            <div className="flex justify-between items-center pb-4">
-              <h1 className="text-white text-left text-[2rem] font-semibold">
+            <div className="flex justify-between items-center pb-2">
+              <h1 className="text-white text-left text-[2.4rem] font-normal underline">
                 {podcasts.title}
               </h1>
               {podcasts.createdBy === auth.currentUser.uid && (
@@ -104,17 +105,22 @@ const PodcastDetails = () => {
               )}
             </div>
 
-            <div className="bg-gradient-to-b from-[#180000] to-gray-800 rounded-lg h-[330px] mb-4 p-4">
+            <motion.div
+              animate={{ x: [100, 0, 0] }}
+              className="rounded-lg h-[330px] mb-4 "
+            >
               <img
-                className="w-[100%] h-[300px] object-fill rounded-lg"
+                className="h-[100%] object-fill rounded-lg"
                 src={podcasts.bannerImage}
                 alt={podcasts.title}
               ></img>
-            </div>
-            <p className="text-[#8f8297] text-left pb-6">
+            </motion.div>
+            <p className="text-[#8f8297] text-left sm:text-[1.2rem] text-[0.8rem] pb-6">
               {podcasts.description}
             </p>
-            <h1 className="text-white text-[1.8rem] font-bold">Episodes</h1>
+            <h1 className="text-white text-[1.4rem] underline font-bold">
+              Episodes
+            </h1>
             {episodes.length > 0 ? (
               <>
                 {episodes.map((episode, index) => (

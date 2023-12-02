@@ -43,6 +43,20 @@ const Podcasts = () => {
       unsubscribe();
     };
   }, [dispatch]);
+
+  const factorial = (n) => {
+    let ans = 1;
+    if (n === 0) {
+      return 1;
+    }
+    for (let i = 1; i <= n; i++) {
+      ans *= i;
+    }
+    return ans;
+  };
+
+  console.log(factorial(0));
+
   return (
     <>
       <Header />

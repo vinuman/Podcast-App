@@ -152,7 +152,7 @@ const SignUpForm = () => {
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
-      console.log(user);
+
       //save user details to firestore
       await setDoc(doc(db, "users", user.uid), {
         name: user.displayName,
@@ -204,13 +204,13 @@ const SignUpForm = () => {
 
   return (
     <>
-      <div className="w-[80%] block mx-auto mt-[4rem]">
+      <div className="sm:w-[30%] w-[90%] block mx-auto mt-[2rem]">
         <input
           type="text"
           value={fullName}
           required={true}
           placeholder="Full Name"
-          className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
+          className={`bg-theme text-white border-2 border-solid  rounded-md px-4 py-2 text-[0.8rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
             nameError ? " border-red-700" : "border-[#8f8297] mb-4"
           }`}
           onChange={(e) => {
@@ -226,7 +226,7 @@ const SignUpForm = () => {
           value={email}
           required={true}
           placeholder="Email"
-          className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
+          className={`bg-theme text-white border-2 border-solid  rounded-md px-4 py-2 text-[0.8rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
             emailError ? " border-red-700" : "border-[#8f8297] mb-4"
           }`}
           onChange={(e) => {
@@ -242,7 +242,7 @@ const SignUpForm = () => {
           value={password}
           required={true}
           placeholder="Password"
-          className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
+          className={`bg-theme text-white border-2 border-solid  rounded-md px-4 py-2 text-[0.8rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
             passwordError ? " border-red-700" : "border-[#8f8297] mb-4"
           }`}
           onChange={(e) => {
@@ -260,7 +260,7 @@ const SignUpForm = () => {
           value={confirmPassword}
           required={true}
           placeholder="Confirm Password"
-          className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
+          className={`bg-theme text-white border-2 border-solid  rounded-md px-4 py-2 text-[0.8rem] w-[100%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] ${
             confirmPasswordError ? " border-red-700" : "border-[#8f8297] mb-8"
           }`}
           onChange={(e) => {
@@ -286,16 +286,16 @@ const SignUpForm = () => {
         )}
 
         <Button
-          className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-4 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300 mt-8"
+          className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-2 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300 mt-8"
           onClick={handleSignUp}
-          text={loading ? "Loading..." : "Sign Up"}
+          text={loading ? "Loading..." : "Sign Up using Email"}
           disabled={loading}
         />
         <p className=" text-white flex items-center justify-center pt-2 font-bold">
           Or
         </p>
         <Button
-          className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-4 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300 mt-2"
+          className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-2 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300 mt-2"
           onClick={googleAuth}
           text={loading ? "Loading..." : "Sign Up Using Google"}
           disabled={loading}

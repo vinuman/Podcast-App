@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import SignUpForm from "../components/SignUpForm";
 import LoginForm from "../components/LoginForm";
+import logo from "../assets/microphone_8333936.png";
 
 const SignUp = () => {
   const [flag, setFlag] = useState(false);
@@ -9,14 +10,21 @@ const SignUp = () => {
     <>
       <div className="pb-8 min-h-screen">
         <Header />
+        <div className="flex justify-center items-center">
+          <h1 className="text-white text-center text-[36px] underline">
+            PodSpark
+          </h1>
+          <img className="w-[40px] h-[40px]" src={logo} alt="logo"></img>
+        </div>
+
         {!flag ? (
-          <h1 className=" font-bold text-white text-center text-[28px] my-[2rem]">
+          <h2 className=" font-semibold text-white text-center text-[28px] mt-[2rem]">
             Sign Up
-          </h1>
+          </h2>
         ) : (
-          <h1 className=" font-bold text-white text-center text-[28px] my-[2rem]">
+          <h2 className=" font-semibold text-white text-center text-[28px] mt-[2rem]">
             Login
-          </h1>
+          </h2>
         )}
         {!flag ? <SignUpForm /> : <LoginForm />}
         {!flag ? (
