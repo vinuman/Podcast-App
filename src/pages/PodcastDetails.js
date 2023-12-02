@@ -86,7 +86,7 @@ const PodcastDetails = () => {
   return (
     <>
       <Header />
-      <div className=" min-h-screen w-[80%] block mx-auto mt-[2rem]">
+      <div className=" min-h-screen w-[80%] block mx-auto mt-[2rem] pb-4">
         {podcasts.id && (
           <div>
             <div className="flex justify-between items-center pb-4">

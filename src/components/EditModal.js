@@ -92,7 +92,7 @@ const Modal = ({ isOpen, onClose, children }) => {
       />
       <div className="flex flex-col">
         <FileInput
-          className="my-4 w-[200px] h-[200px] flex justify-center items-center"
+          className="my-4 w-[150px] h-[100px] flex justify-center items-center"
           text="Upload Image"
           accept={"image/*"}
           id="display-image-input"
@@ -102,7 +102,7 @@ const Modal = ({ isOpen, onClose, children }) => {
           type="text"
           required={true}
           placeholder="Full Name"
-          className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[50%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] 
+          className={`bg-theme text-white border-2 border-solid  rounded-md p-4 text-[1rem] w-[20%] font-bold focus:outline-none focus:border-white placeholder:text-[#8f8297] 
             border-[#8f8297] mb-4"
           `}
           value={newName}
