@@ -16,7 +16,7 @@ const Header = () => {
             }`}
             to="/"
           >
-            Signup
+            Home
           </Link>
           <Link
             className={`hover:text-white transition-all duration-300 z-10 ${

@@ -14,6 +14,7 @@ import CreatePodcast from "./pages/CreatePodcast";
 import Podcasts from "./pages/Podcasts";
 import PodcastDetails from "./pages/PodcastDetails";
 import CreateEpisode from "./pages/CreateEpisode";
+import Home from "./pages/Home";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,11 +56,13 @@ function App() {
   return (
     <div className="App font-inter bg-theme w-[100vw]">
       <Routes>
-        <Route path="/" element={<SignUp />}></Route>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/signup" element={<SignUp />}></Route>
+        <Route path="podcasts" element={<Podcasts />}></Route>
         <Route element={<PrivateRoutes />}>
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/create-a-podcast" element={<CreatePodcast />}></Route>
-          <Route path="podcasts" element={<Podcasts />}></Route>
+
           <Route path="podcast/:id" element={<PodcastDetails />}></Route>
           <Route
             path="/podcast/:id/create-episode"
