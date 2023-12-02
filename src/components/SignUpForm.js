@@ -2,11 +2,13 @@ import React from "react";
 import Input from "./Input";
 import Button from "./Button";
 import { useState } from "react";
-import { auth, db, storage } from "../firebase";
+import { auth, db, storage, provider } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
@@ -123,7 +125,7 @@ const SignUpForm = () => {
         });
         setLoading(false);
         //navigate to the  profile page
-        navigate("/podcasts");
+        navigate("/profile");
       } catch (err) {
         toast.error(err, {
           position: "top-right",
@@ -138,6 +140,66 @@ const SignUpForm = () => {
       }
     }
     setLoading(false);
+  };
+
+  //Google Auth
+  const googleAuth = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      console.log(user);
+      //save user details to firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: user.displayName,
+        email: user.email,
+        uid: user.uid,
+        displayImage: user.photoURL,
+      });
+
+      //save the user state
+
+      dispatch(
+        setUser({
+          name: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          displayImage: user.photoURL,
+        })
+      );
+
+      toast.success("User created", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "#20062e",
+      });
+      setLoading(false);
+      //navigate to the  profile page
+      navigate("/profile");
+    } catch (error) {
+      // Handle Errors here.
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "#20062e",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -227,6 +289,15 @@ const SignUpForm = () => {
           className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-4 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300 mt-8"
           onClick={handleSignUp}
           text={loading ? "Loading..." : "Sign Up"}
+          disabled={loading}
+        />
+        <p className=" text-white flex items-center justify-center pt-2 font-bold">
+          Or
+        </p>
+        <Button
+          className="text-center text-[1.2rem] font-bold border-2 border-solid border-white p-4 rounded-md text-white w-[100%] mx-auto hover:bg-white hover:text-theme transition-all duration-300 mt-2"
+          onClick={googleAuth}
+          text={loading ? "Loading..." : "Sign Up Using Google"}
           disabled={loading}
         />
       </div>
